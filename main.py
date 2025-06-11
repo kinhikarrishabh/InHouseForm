@@ -6,13 +6,16 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 
 # PostgreSQL connection settings
+import os
+
 DB_CONFIG = {
-    "host": "localhost",
-    "port": 5432,
-    "database": "distributor_db",
-    "user": "distri",
-    "password": "password"  # Change this!
+    "host": os.getenv("DB_HOST"),
+    "port": int(os.getenv("DB_PORT", 5432)),
+    "database": os.getenv("DB_NAME"),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD")  # 👈 MUST be DB_PASSWORD
 }
+
 
 def get_conn():
     return psycopg2.connect(**DB_CONFIG, cursor_factory=RealDictCursor)
