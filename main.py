@@ -18,7 +18,13 @@ DB_CONFIG = {
 
 
 def get_conn():
-    return psycopg2.connect(**DB_CONFIG, cursor_factory=RealDictCursor)
+    try:
+        return psycopg2.connect(**DB_CONFIG, cursor_factory=RealDictCursor)
+    except Exception as e:
+        import sys
+        print("🔴 DATABASE CONNECTION ERROR:", e, file=sys.stderr)
+        raise
+
 
 def init_db():
     conn = get_conn()
