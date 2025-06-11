@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distributor Questionnaire</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+
+    .form-container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .question-block {
+      margin-bottom: 20px;
+    }
+
+    .question-block p {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    label {
+      display: block;
+      margin: 4px 0;
+      padding-left: 10px;
+    }
+
+    input[type="radio"] {
+      margin-right: 8px;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      padding: 12px;
+      border: none;
+      width: 100%;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Distributor Questionnaire</h2>
+    <form id="qForm" method="post">
+      <div id="questions"></div>
+
+      <input type="hidden" name="distributor_id" id="distributor_id" />
+      <button type="submit">Submit Answers</button>
+    </form>
+  </div>
+
+  <script>
+    const qDiv = document.getElementById("questions");
+    for (let i = 1; i <= 10; i++) {
+      let html = `<div class="question-block"><p>Question ${i}</p>`;
+      for (let j = 1; j <= 5; j++) {
+        html += `
+          <label>
+            <input type="radio" name="q${i}" value="Option ${j}" required />
+            Option ${j}
+          </label>`;
+      }
+      html += "</div>";
+      qDiv.innerHTML += html;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const distributor_id = urlParams.get("distributor_id");
+    document.getElementById("distributor_id").value = distributor_id;
+    document.getElementById("qForm").action = `/submit-answers?distributor_id=${distributor_id}`;
+  </script>
+</body>
+</html>
