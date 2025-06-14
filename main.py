@@ -3,6 +3,7 @@ from fastapi.responses import RedirectResponse, HTMLResponse, FileResponse, JSON
 from fastapi.templating import Jinja2Templates
 import pandas as pd
 import psycopg2
+import uvicorn
 from psycopg2.extras import RealDictCursor
 
 # PostgreSQL connection settings
@@ -176,4 +177,6 @@ def get_distributor_answers():
     return JSONResponse(content=df.to_dict(orient="records"))
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+
