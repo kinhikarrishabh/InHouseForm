@@ -8,22 +8,13 @@ from psycopg2.extras import RealDictCursor
 # PostgreSQL connection settings
 import os
 
-DB_CONFIG = {
-    "host": os.getenv("DB_HOST"),
-    "port": int(os.getenv("DB_PORT", 5432)),
-    "database": os.getenv("DB_NAME"),
-    "user": os.getenv("DB_USER"),
-    "password": os.getenv("DB_PASSWORD")  # 👈 MUST be DB_PASSWORD
-}
-
+import psycopg2
+from psycopg2.extras import RealDictCursor
 
 def get_conn():
-    try:
-        return psycopg2.connect(**DB_CONFIG, cursor_factory=RealDictCursor)
-    except Exception as e:
-        import sys
-        print("🔴 DATABASE CONNECTION ERROR:", e, file=sys.stderr)
-        raise
+    db_url = os.getenv("DATABASE_URL")
+    return psycopg2.connect(db_url, cursor_factory=RealDictCursor)
+
 
 
 def init_db():
@@ -183,3 +174,6 @@ def get_distributor_answers():
     df = pd.read_sql_query("SELECT * FROM distributor_answers", conn)
     conn.close()
     return JSONResponse(content=df.to_dict(orient="records"))
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000)
